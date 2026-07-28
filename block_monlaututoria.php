@@ -8,7 +8,9 @@ class block_monlaututoria extends block_base {
     }
 
     public function get_content() {
-        global $USER;
+        global $USER, $PAGE;
+
+        $PAGE->requires->css(new moodle_url('/blocks/monlaututoria/styles.css'));
 
         if ($this->content !== null) {
             return $this->content;
@@ -46,23 +48,31 @@ class block_monlaututoria extends block_base {
 
             if ($dashboard !== null) {
                 $summary = $dashboard->summary;
-                $items = [
-                    get_string('dashboard_summary_assigned', 'local_monlaututoria') . ': ' . $summary->assignedcount,
-                    get_string('dashboard_summary_coverage', 'local_monlaututoria') . ': ' . format_float($summary->coveragepercent, 2) . ' %',
-                    get_string('dashboard_summary_followupsoverdue', 'local_monlaututoria') . ': ' . $summary->overduefollowupcount,
-                    get_string('dashboard_summary_agreementspending', 'local_monlaututoria') . ': ' . ($summary->pendingagreementcount + $summary->overdueagreementcount),
-                    get_string('dashboard_summary_referrals', 'local_monlaututoria') . ': ' . $summary->openreferralcount,
-                    get_string('dashboard_summary_priority', 'local_monlaututoria') . ': ' . $summary->prioritystudentcount,
-                ];
+                $coveragepercent = min(100.0, max(0.0, (float) $summary->coveragepercent));
+
                 $html .= html_writer::tag(
                     'h5',
                     get_string('block_section_tutor', 'block_monlaututoria'),
                     ['class' => 'mb-2']
                 );
-                $html .= html_writer::tag(
-                    'ul',
-                    implode('', array_map(static fn(string $item): string => html_writer::tag('li', s($item)), $items))
+
+                $assignedtile = html_writer::div(
+                    html_writer::span((string) $summary->assignedcount, 'block-monlaututoria-stat__value')
+                    . html_writer::span(get_string('dashboard_summary_assigned', 'local_monlaututoria'), 'block-monlaututoria-stat__label'),
+                    'block-monlaututoria-stat'
                 );
+
+                $coveragetile = html_writer::div(
+                    html_writer::span(format_float($coveragepercent, 2) . ' %', 'block-monlaututoria-stat__value')
+                    . html_writer::span(get_string('dashboard_summary_coverage', 'local_monlaututoria'), 'block-monlaututoria-stat__label')
+                    . html_writer::div(
+                        html_writer::div('', 'block-monlaututoria-stat__meter-fill', ['style' => 'width: ' . $coveragepercent . '%;']),
+                        'block-monlaututoria-stat__meter'
+                    ),
+                    'block-monlaututoria-stat'
+                );
+
+                $html .= html_writer::div($assignedtile . $coveragetile, 'block-monlaututoria-stats');
 
                 if ($summary->prioritystudentcount > 0) {
                     $html .= html_writer::div(
