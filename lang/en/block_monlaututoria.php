@@ -9,6 +9,7 @@ $string['block_unavailable'] = 'You do not have access to the tutoring screens.'
 $string['block_noactiveyear'] = 'There is no active academic year to summarise for the tutor dashboard.';
 $string['block_section_tutor'] = 'Tutoring';
 $string['block_section_coordination'] = 'Coordination';
+$string['block_open_newentry'] = 'New tutoring entry';
 $string['block_open_dashboard'] = 'Open tutor dashboard';
 $string['block_open_assignments'] = 'Open assignments';
 $string['block_open_priority'] = 'Open priority students';

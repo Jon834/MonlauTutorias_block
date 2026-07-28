@@ -35,6 +35,12 @@ class block_monlaututoria extends block_base {
         ], $context);
         $hasreferralaccess = has_capability('local/monlaututoria:managereferrals', $context);
         $hasscopemanagement = has_capability('local/monlaututoria:managecoordinationscopes', $context);
+        $cancreateentry = has_capability('local/monlaututoria:createentry', $context);
+        // Same setting dashboard.php reads (local_monlaututoria/dashboard_showpriority)
+        // — only controls this link's visibility, the underlying count is
+        // still computed exactly as before. !== '0', not a bool cast: see
+        // dashboard.php's own comment on this exact check.
+        $showpriority = get_config('local_monlaututoria', 'dashboard_showpriority') !== '0';
 
         if (!$hastutoraccess && !$hascoordinationaccess && !$hasreferralaccess) {
             $this->content->text = get_string('block_unavailable', 'block_monlaututoria');
@@ -74,7 +80,7 @@ class block_monlaututoria extends block_base {
 
                 $html .= html_writer::div($assignedtile . $coveragetile, 'block-monlaututoria-stats');
 
-                if ($summary->prioritystudentcount > 0) {
+                if ($showpriority && $summary->prioritystudentcount > 0) {
                     $html .= html_writer::div(
                         html_writer::link(
                             new moodle_url('/local/monlaututoria/dashboard.php', ['studentfilter' => 'priority']),
@@ -86,6 +92,18 @@ class block_monlaututoria extends block_base {
                 $html .= html_writer::tag('p', get_string('block_noactiveyear', 'block_monlaututoria'));
             }
 
+            if ($cancreateentry) {
+                // No studentid here on purpose — entries/create.php shows a
+                // picker limited to this tutor's own current students when
+                // none is given, so this link works from a generic block
+                // without knowing in advance which student it's for.
+                $html .= html_writer::div(
+                    html_writer::link(
+                        new moodle_url('/local/monlaututoria/entries/create.php'),
+                        get_string('block_open_newentry', 'block_monlaututoria')
+                    )
+                );
+            }
             $html .= html_writer::div(
                 html_writer::link(
                     new moodle_url('/local/monlaututoria/dashboard.php'),

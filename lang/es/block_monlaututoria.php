@@ -9,6 +9,7 @@ $string['block_unavailable'] = 'No tienes acceso a las pantallas de tutoría.';
 $string['block_noactiveyear'] = 'No hay un curso académico activo para mostrar el resumen del tutor.';
 $string['block_section_tutor'] = 'Tutorías';
 $string['block_section_coordination'] = 'Coordinación';
+$string['block_open_newentry'] = 'Nueva tutoría';
 $string['block_open_dashboard'] = 'Abrir panel del tutor';
 $string['block_open_assignments'] = 'Abrir asignaciones';
 $string['block_open_priority'] = 'Abrir alumnos prioritarios';

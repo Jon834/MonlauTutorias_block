@@ -9,6 +9,7 @@ $string['block_unavailable'] = 'No tens accés a les pantalles de tutoria.';
 $string['block_noactiveyear'] = 'No hi ha cap curs acadèmic actiu per resumir el tauler del tutor.';
 $string['block_section_tutor'] = 'Tutories';
 $string['block_section_coordination'] = 'Coordinació';
+$string['block_open_newentry'] = 'Nova tutoria';
 $string['block_open_dashboard'] = 'Obrir tauler del tutor';
 $string['block_open_assignments'] = 'Obrir assignacions';
 $string['block_open_priority'] = 'Obrir alumnes prioritaris';
